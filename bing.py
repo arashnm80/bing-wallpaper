@@ -1,4 +1,4 @@
-import requests, json, os
+import requests, os
 from variables import peapix_url, bot_url, chat_id
 
 def main():
@@ -22,7 +22,7 @@ def main():
 
 def date_exists(date):
     # Check if the file exists
-    if os.path.isfile(date):
+    if os.path.isfile("./dates/" + date):
         return True
     else:
         return False
@@ -35,7 +35,7 @@ def send_to_channel(date):
     response = requests.post(bot_url + 'sendPhoto', data={
         'chat_id': chat_id,
         'photo': imageUrl,
-        'caption': "bing wallpaper of " + date
+        'caption': "bing wallpaper of " + date + "\n\n@BingWalls"
     })
 
     # Check if the message was sent successfully
@@ -48,7 +48,7 @@ def send_to_channel(date):
     response = requests.post(bot_url + 'sendDocument', data={
         'chat_id': chat_id,
         'document': imageUrl,
-        'caption': "high quality bing wallpaper of " + date
+        'caption': "high quality bing wallpaper of " + date + "\n\n@BingWalls"
     })
 
     # Check if the message was sent successfully
