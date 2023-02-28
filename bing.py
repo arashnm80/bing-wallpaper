@@ -1,5 +1,5 @@
 import requests, os
-from variables import peapix_url, bot_url, chat_id
+from variables import peapix_url, bot_url, chat_id, log_channel_id
 
 def main():
     # these headers are used to make the request more natural like when it's from a user not a bot
@@ -17,14 +17,16 @@ def main():
         print(date)
         print(imageUrl)
         if date_exists(date):
-            print("This date already exists")
+            print("date " + date + " already exists")
+            log("date " + date + " already exists")
         else:
             with open("./dates/" + date, 'w') as file:
                 file.write(imageUrl)
             send_to_channel(date)
     else:
         # The request failed
-        print('Error:', response.status_code)
+        print('Error: ' + response.status_code)
+        log('Error: ' + response.status_code)
 
 def date_exists(date):
     # Check if the file exists
@@ -46,9 +48,11 @@ def send_to_channel(date):
 
     # Check if the message was sent successfully
     if response.status_code == 200:
-        print('Image sent successfully!')
+        print('Image of ' + date + ' sent successfully!')
+        log('Image of ' + date + ' sent successfully!')
     else:
-        print('Error sending image:', response.status_code)
+        print('Error in sending image of ' + date + ' :' + response.status_code)
+        log('Error in sending image of ' + date + ' :' + response.status_code)
 
     # send image as file:
     response = requests.post(bot_url + 'sendDocument', data={
@@ -59,8 +63,22 @@ def send_to_channel(date):
 
     # Check if the message was sent successfully
     if response.status_code == 200:
-        print('document sent successfully!')
+        print('document of ' + date + ' sent successfully!')
+        log('document of ' + date + ' sent successfully!')
     else:
-        print('Error sending image:', response.status_code)
+        print('Error in sending document of ' + date + ' :' + response.status_code)
+        log('Error in sending document of ' + date + ' :' + response.status_code)
+
+def log(log_message):
+    log = requests.post(bot_url + "sendMessage", data={
+        "chat_id": log_channel_id,
+        "text": log_message
+    })
+
+    # Check if the log was sent successfully
+    if log.status_code == 200:
+        print('log registered')
+    else:
+        print('Error in registering log:', log.status_code)
 
 main()
