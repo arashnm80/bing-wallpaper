@@ -2,6 +2,7 @@ import requests, os
 from variables import peapix_url, bot_url, chat_id, log_channel_id
 
 def main():
+    os.chdir(os.path.realpath(os.path.dirname(__file__))) # changes directory to path of bing.py so when I run script from another directory won't get error
     # these headers are used to make the request more natural like when it's from a user not a bot
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
